@@ -27,7 +27,7 @@ void testFunction(std::string csGridName, std::string gaussGridName) {
 
     const grid::MatchingMeshPartitioner CSPartitioner(CSFunctionSpace.mesh(), atlas::option::type("cubedsphere"));
     const grid::Distribution gaussToCSDistribution(gaussGrid, CSPartitioner);
-    const Mesh structuredGaussMesh = atlas::StructuredMeshGenerator().generate(gaussGrid, gaussToCSDistribution); // Problem occurs here on non-rubix cube ranks.
+    const Mesh structuredGaussMesh = atlas::StructuredMeshGenerator().generate(gaussGrid, gaussToCSDistribution); // Problem occurs here on non-rubix cube ranks (seems to be in MPI allgather MeshGeneratorImpl).
 }
 
 CASE("CS12 O12") {

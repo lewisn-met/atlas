@@ -83,7 +83,7 @@ void MeshGeneratorImpl::generateGlobalElementNumbering(Mesh& mesh) const {
     std::vector<gidx_t> elem_counts(mpi_size);
     std::vector<gidx_t> elem_displs(mpi_size);
 
-    ATLAS_TRACE_MPI(ALLGATHER) { comm.allGather(loc_nb_elems, elem_counts.begin(), elem_counts.end()); }
+    ATLAS_TRACE_MPI(ALLGATHER) { comm.allGather(loc_nb_elems, elem_counts.begin(), elem_counts.end()); } // Here???
 
     elem_displs.at(0) = 0;
     for (idx_t jpart = 1; jpart < mpi_size; ++jpart) {

@@ -13,6 +13,7 @@
 #include <limits>
 #include <memory>
 #include <numeric>
+#include <string>
 #include <vector>
 
 #include "eckit/log/ProgressTimer.h"
@@ -273,7 +274,7 @@ void StructuredMeshGenerator::generate(const Grid& grid, const grid::Distributio
 
     mesh.metadata().set("nb_parts",options.getInt("nb_parts"));
     mesh.metadata().set("part",options.getInt("part"));
-    mesh.metadata().set("mpi_comm",options.getString("mpi_comm"));
+    mesh.metadata().set("mpi_comm", options.getString("mpi_comm"));
     generate_mesh(rg, distribution, region, mesh);
 }
 
@@ -1582,6 +1583,12 @@ void StructuredMeshGenerator::generate_mesh(const StructuredGrid& rg, const grid
                     ip2 = jbackward - 1;
                     ip3 = jforward;
                 }
+
+                std::cout << ":Rank:" + std::to_string(mpi::comm(mesh->mpi_comm()).rank()) +
+                                 ":node_numbering_size:" + std::to_string(node_numbering_size) +
+                                 ":ilat:" + std::to_string(ilat) +
+                                 ":offset_loc.at(ilat):" + std::to_string(offset_loc.at(ilat)) +
+                                 ":ip1:" + std::to_string(ip1) + "\n";
 
                 triag_nodes[0] = node_numbering.at(offset_loc.at(ilat) + ip1);
                 triag_nodes[1] = node_numbering.at(offset_loc.at(ilat) + ip2);

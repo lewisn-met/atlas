@@ -19,12 +19,11 @@ namespace test {
 void testFunction(std::string csGridName, std::string gaussGridName) {
     const Grid grid               = Grid(csGridName);
     const util::Config meshConfig = util::Config("partitioner", "cubedsphere") | util::Config("halo", 1);
-    const MeshGenerator meshGen   = MeshGenerator("cubedsphere", meshConfig);
+    const MeshGenerator meshGen   = MeshGenerator("cubedsphere_dual", meshConfig);
     const Mesh mesh               = meshGen.generate(grid);
     const functionspace::NodeColumns CSFunctionSpace = functionspace::NodeColumns(mesh);
 
     const StructuredGrid gaussGrid(gaussGridName);
-
     const grid::MatchingMeshPartitioner CSPartitioner(CSFunctionSpace.mesh(), atlas::option::type("cubedsphere"));
     const grid::Distribution gaussToCSDistribution(gaussGrid, CSPartitioner);
     const Mesh structuredGaussMesh = atlas::StructuredMeshGenerator().generate(gaussGrid, gaussToCSDistribution); // Problem occurs here on non-rubix cube ranks (seems to be in MPI allgather MeshGeneratorImpl).
